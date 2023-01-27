@@ -1,4 +1,4 @@
-const puppeteer = require('puppeteer');
+import puppeteer, { Page } from 'puppeteer';
 
 // const nums = [
 // 	'+972548773141',
@@ -84,11 +84,11 @@ const msg = `היי, מדברת דניאל אני מחברת מודיעין אז
 	await browser.close();
 })();
 
-async function sendMessage(page, number) {
+async function sendMessage(page: Page, number: string) {
 	try {
 		await page.goto(`https://wa.me/${number}`);
 		const link = await page.evaluate(() => {
-			return document.querySelector('#action-button')?.getAttribute('href');
+			return (document as any).querySelector('#action-button')?.getAttribute('href');
 		});
 
 		if (link) {
