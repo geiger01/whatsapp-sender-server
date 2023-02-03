@@ -1,5 +1,6 @@
 import express, { Express, Request, Response } from 'express';
 import bodyParser from 'body-parser';
+import cors from 'cors'
 import dotenv from 'dotenv';
 import { initSend } from './bot.helper';
 
@@ -9,6 +10,11 @@ const app: Express = express();
 const port = process.env.PORT;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(
+	cors({
+		origin: '*',
+	})
+);
 
 app.get('/', (req: Request, res: Response) => {
 	res.send('Express + TypeScript Server');
