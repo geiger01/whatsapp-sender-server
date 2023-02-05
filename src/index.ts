@@ -29,6 +29,10 @@ app.post('/api/send', async (req: Request, res: Response) => {
 
 	try {
 		await initSend(res, nums, msg);
+		res.status(200).send({
+			message: 'WhatsApp message was successfully sent',
+			success: true,
+		});
 	} catch (e) {
 		res.status(400).send({
 			message: `${e} - Oops, something went wrong, please try again.`,
@@ -36,10 +40,6 @@ app.post('/api/send', async (req: Request, res: Response) => {
 		});
 		return;
 	}
-	res.status(200).send({
-		message: 'WhatsApp message was successfully sent',
-		success: true,
-	});
 });
 
 app.listen(port, () => {
