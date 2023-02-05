@@ -21,7 +21,7 @@ export async function initSend(res: Response, nums: string[], msg: string) {
 		}
 	} catch (e) {
 		console.log(e, 'error');
-        throw new Error('not working');
+        throw new Error(`${e} - not working`);
 	}
 	await browser.close();
 }
@@ -47,6 +47,6 @@ async function sendMessage(page: Page, number: string, msg: string) {
             }
         } catch (e) {
         console.log(e, 'error');
-		throw new Error('not working');
+		throw new Error(`${e} - not working`);
 	}
 }
