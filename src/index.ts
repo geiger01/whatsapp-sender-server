@@ -23,7 +23,7 @@ app.get('/', (req: Request, res: Response) => {
 app.post('/api/send', async (req: Request, res: Response) => {
 	const { msg, nums } = req.body;
 
-	if (msg || nums.length >= 1) {
+	if (!msg || !nums.length) {
 		res.status(400).send({ message: 'missing fields', success: false });
 	}
 
