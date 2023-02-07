@@ -21,14 +21,14 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 app.post('/api/send', async (req: Request, res: Response) => {
-	const { msg, nums } = req.body;
+	const { msg, nums, id } = req.body;
 
 	if (!msg || !nums.length) {
 		res.status(400).send({ message: 'missing fields', success: false });
 	}
 
 	try {
-		await initSend(res, nums, msg);
+		await initSend(res, nums, msg, id);
 		res.status(200).send({
 			message: 'WhatsApp message was successfully sent',
 			success: true,
