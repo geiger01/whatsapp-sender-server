@@ -18,7 +18,7 @@ export async function initSend(
 	id: string
 ) {
 	const puppeteerOpts = {
-		headless: false,
+		headless: true,
 		args: [
 			'--no-sandbox',
 			'--disable-setuid-sandbox',
