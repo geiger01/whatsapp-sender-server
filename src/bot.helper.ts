@@ -11,12 +11,7 @@ cloudinary.config({
 	api_secret: API_SECRET,
 });
 
-export async function initSend(
-	res: Response,
-	nums: string[],
-	msg: string,
-	id: string
-) {
+export async function initSend(res: Response, nums: string[], msg: string) {
 	const puppeteerOpts = {
 		headless: true,
 		args: [
@@ -33,7 +28,7 @@ export async function initSend(
 
 	try {
 		for (let index = 0; index < nums.length; index++) {
-			await sendMessage(page, nums[index], msg, index, id);
+			await sendMessage(page, nums[index], msg, index);
 		}
 	} catch (e) {
 		console.log(e, 'error');
@@ -46,8 +41,7 @@ async function sendMessage(
 	page: Page,
 	number: string,
 	msg: string,
-	idx: number,
-	id: string
+	idx: number
 ) {
 	try {
 		await page.goto(`https://wa.me/${number}`);
@@ -59,14 +53,6 @@ async function sendMessage(
 
 		if (link) {
 			await page.goto(link);
-			if (idx === 0) {
-				// Capture screenshot
-				await page.waitForSelector('[data-testid="qrcode"]');
-				const barcode = await page.screenshot({
-					path: 'screenshot.jpg',
-				});
-				sendScreenShotToClient(barcode, id);
-			}
 			await page.waitForSelector(
 				'[data-testid=conversation-compose-box-input]'
 			);
@@ -79,30 +65,4 @@ async function sendMessage(
 		console.log(e, 'error');
 		throw new Error(`${e} - not working`);
 	}
-}
-
-async function sendScreenShotToClient(screenshot: Buffer | string, id: string) {
-	cloudinary.uploader
-		.upload_stream(
-			{ resource_type: 'image', public_id: id },
-			(error, result) => {
-				if (error) {
-					console.error(error);
-				} else {
-					console.log(result);
-				}
-			}
-		)
-		.end(screenshot);
-	console.log('Image uploaded');
-
-	setTimeout(() => {
-		cloudinary.api.delete_resources([id], (error, result) => {
-			if (error) {
-				console.error(error);
-			} else {
-				console.log(result);
-			}
-		});
-	}, 10000);
 }
